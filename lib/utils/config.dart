@@ -1,37 +1,33 @@
 import 'package:flutter/material.dart';
 
-class Config {
-  static MediaQueryData? mediaQueryData;
-  static double? screenWidth;
-  static double? screenHeight;
+extension ContextEx on BuildContext {
+  double get width => MediaQuery.sizeOf(this).width;
+  double get height => MediaQuery.sizeOf(this).height;
+  double get paddingTop => MediaQuery.paddingOf(this).top;
 
-  void init(BuildContext context) {
-    mediaQueryData = MediaQuery.of(context);
-    screenWidth = mediaQueryData!.size.width;
-    screenHeight = mediaQueryData!.size.height;
-  }
+  SizedBox spacePercentHeight(double percent) => SizedBox(height: height * percent);
+  SizedBox get spaceMedium => SizedBox(height: height * 0.05);
+  SizedBox get spaceBig => SizedBox(height: height * 0.08);
+  SizedBox get spaceSmall => SizedBox(height: 25);
+}
 
-  static double? get widthSize {
-    return screenWidth;
-  }
+abstract class Config {
+  // 防止被意外實例化 (Instantiation)
+  Config._();
 
-  static double? get heightSize {
-    return screenHeight;
-  }
+  static const primaryColor = Colors.greenAccent;
 
-  static const spaceSmall = SizedBox(height: 25);
-  static final spaceMedium = SizedBox(height: screenHeight! * 0.05);
-  static final spaceBig = SizedBox(height: screenHeight! * 0.08);
+  static const borderRadius8 = BorderRadius.all(Radius.circular(8));
 
-  static const outlinedBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(8)),
-  );
+  static const outlinedBorder = OutlineInputBorder(borderRadius: borderRadius8);
+
   static const focusBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(8)),
-    borderSide: BorderSide(color: Colors.greenAccent),
+    borderRadius: borderRadius8,
+    borderSide: BorderSide(color: primaryColor),
   );
+
   static const errorBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(8)),
+    borderRadius: borderRadius8,
     borderSide: BorderSide(color: Colors.red),
   );
 }
