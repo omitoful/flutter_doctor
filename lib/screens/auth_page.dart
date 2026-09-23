@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_doctor/components/button.dart';
 import 'package:flutter_doctor/components/login_form.dart';
 import 'package:flutter_doctor/components/social_button.dart';
 import 'package:flutter_doctor/utils/config.dart';
@@ -34,27 +33,6 @@ class _AuthPageState extends State<AuthPage> {
               ),
               context.spaceSmall,
               LoginForm(),
-              context.spaceSmall,
-              Center(
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    AppText.enText['forgot-password']!,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
-              context.spaceSmall,
-              Button(
-                width: double.infinity,
-                title: 'Sign In',
-                onPressed: () {},
-                disable: false,
-              ),
               Spacer(),
               Center(
                 child: Text(
