@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_doctor/components/schedule_card.dart';
 import 'package:flutter_doctor/utils/config.dart';
 
 class AppointmentCard extends StatefulWidget {
@@ -39,7 +40,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                 ],
               ),
               context.spaceSmall,
-              ScheduleCard(),
+              ScheduleCard(isHome: true),
               context.spaceSmall,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,36 +65,6 @@ class _AppointmentCardState extends State<AppointmentCard> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ScheduleCard extends StatelessWidget {
-  const ScheduleCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      width: double.infinity,
-      padding: EdgeInsets.all(20),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Icon(Icons.calendar_today, color: Colors.white, size: 15),
-          SizedBox(width: 5),
-          Text('Monday, 11/28/2022', style: TextStyle(color: Colors.white)),
-          SizedBox(width: 20),
-          Icon(Icons.access_alarm, color: Colors.white, size: 17),
-          SizedBox(width: 5),
-          Flexible(
-            child: Text('2:00 PM', style: TextStyle(color: Colors.white)),
-          ),
-        ],
       ),
     );
   }
