@@ -20,7 +20,7 @@ class _DoctorDetailsState extends State<DoctorDetails> {
     return Scaffold(
       appBar: CustomAppbar(
         appTitle: 'Doctor Details',
-        icon: FaIcon(Icons.arrow_back_ios),
+        icon: FaIcon(FontAwesomeIcons.chevronLeft),
         actions: [
           IconButton(
             onPressed: () {
@@ -43,11 +43,13 @@ class _DoctorDetailsState extends State<DoctorDetails> {
               DetailBody(),
               context.spaceMedium,
               Padding(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
                 child: Button(
                   width: double.infinity,
                   title: 'Book Appointment',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed("booking_page");
+                  },
                   disable: false,
                 ),
               ),
