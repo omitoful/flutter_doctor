@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_doctor/components/button.dart';
+import 'package:flutter_doctor/main.dart';
+import 'package:flutter_doctor/models/auth_model.dart';
+import 'package:flutter_doctor/providers/dio_provider.dart';
 import 'package:flutter_doctor/utils/config.dart';
 import 'package:flutter_doctor/utils/text.dart';
+import 'package:provider/provider.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -73,13 +77,25 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
           context.spaceSmall,
-          Button(
-            width: double.infinity,
-            title: 'Sign In',
-            onPressed: () {
-              Navigator.of(context).pushNamed('main');
+          Consumer<AuthModel>(
+            builder: (context, auth, child) {
+              return Button(
+                width: double.infinity,
+                title: 'Sign In',
+                onPressed: () async {
+                  final token = await DioProvider().getToken(
+                    _emailController.text,
+                    _passController.text,
+                  );
+                  if (token) {
+                    auth.loginSuccess();
+                    MyApp.navigatorKey.currentState!.pushNamed('main');
+                    // Navigator.of(context).pushNamed('main');
+                  }
+                },
+                disable: false,
+              );
             },
-            disable: false,
           ),
         ],
       ),
