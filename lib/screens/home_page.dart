@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
       if (response != null) {
         setState(() {
           user = json.decode(response);
+          print(user['doctor']);
         });
       }
     }
@@ -48,88 +49,96 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      user['name'] ?? 'User',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundImage: AssetImage('assets/profile1.png'),
+      body: user.isEmpty
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            user['name'] ?? 'User',
+                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            child: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: AssetImage('assets/profile1.png'),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-                context.spaceMedium,
-                Text(
-                  'Category',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                context.spaceSmall,
-                SizedBox(
-                  height: context.height * 0.05,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: List<Widget>.generate(medCat.length, (index) {
-                      return Card(
-                        margin: EdgeInsets.only(right: 20),
-                        color: Config.primaryColor,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              FaIcon(medCat[index]['icon'], color: Colors.white),
-                              SizedBox(width: 20),
-                              Text(
-                                medCat[index]['category'],
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                      context.spaceMedium,
+                      Text(
+                        'Category',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      context.spaceSmall,
+                      SizedBox(
+                        height: context.height * 0.05,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: List<Widget>.generate(medCat.length, (index) {
+                            return Card(
+                              margin: EdgeInsets.only(right: 20),
+                              color: Config.primaryColor,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 15,
+                                  vertical: 10,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    FaIcon(medCat[index]['icon'], color: Colors.white),
+                                    SizedBox(width: 20),
+                                    Text(
+                                      medCat[index]['category'],
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
+                            );
+                          }),
                         ),
-                      );
-                    }),
+                      ),
+                      context.spaceSmall,
+                      Text(
+                        'Appointment Today',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      context.spaceSmall,
+                      AppointmentCard(),
+                      context.spaceSmall,
+                      Text(
+                        'Top Doctors',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      context.spaceSmall,
+                      Column(
+                        children: List.generate(user['doctor'].length, (index) {
+                          return DoctorCard(
+                            route: 'doc_details',
+                            doctor: user['doctor'][index],
+                          );
+                        }),
+                      ),
+                    ],
                   ),
                 ),
-                context.spaceSmall,
-                Text(
-                  'Appointment Today',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                context.spaceSmall,
-                AppointmentCard(),
-                context.spaceSmall,
-                Text(
-                  'Top Doctors',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                context.spaceSmall,
-                Column(
-                  children: List.generate(10, (index) {
-                    return DoctorCard(route: 'doc_details');
-                  }),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

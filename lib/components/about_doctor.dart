@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_doctor/utils/config.dart';
 
 class AboutDoctor extends StatelessWidget {
-  const AboutDoctor({super.key});
+  const AboutDoctor({super.key, required this.doctor});
+
+  final Map<dynamic, dynamic> doctor;
 
   @override
   Widget build(BuildContext context) {
@@ -12,12 +14,12 @@ class AboutDoctor extends StatelessWidget {
         children: <Widget>[
           CircleAvatar(
             radius: 65.0,
-            backgroundImage: AssetImage('assets/doctor2.jpg'),
+            backgroundImage: NetworkImage(doctor['doctor_profile']),
             backgroundColor: Colors.white,
           ),
           context.spaceMedium,
           Text(
-            'Dr Richard Tan',
+            'Dr ${doctor['doctor_name']}',
             style: TextStyle(
               color: Colors.black,
               fontSize: 24.0,

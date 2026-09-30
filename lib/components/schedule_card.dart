@@ -2,8 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_doctor/utils/config.dart';
 
 class ScheduleCard extends StatelessWidget {
-  const ScheduleCard({super.key, required this.isHome});
+  ScheduleCard({
+    super.key,
+    required this.isHome,
+    required this.date,
+    required this.day,
+    required this.time,
+  });
   final bool isHome;
+  final String date;
+  final String day;
+  final String time;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +34,7 @@ class ScheduleCard extends StatelessWidget {
           ),
           SizedBox(width: 5),
           Text(
-            'Monday, 11/28/2022',
+            '$day, $date',
             style: TextStyle(color: isHome ? Colors.white : Config.primaryColor),
           ),
           SizedBox(width: 20),
@@ -37,7 +46,7 @@ class ScheduleCard extends StatelessWidget {
           SizedBox(width: 5),
           Flexible(
             child: Text(
-              '2:00 PM',
+              time,
               style: TextStyle(color: isHome ? Colors.white : Config.primaryColor),
             ),
           ),

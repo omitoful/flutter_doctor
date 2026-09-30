@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_doctor/utils/config.dart';
 
 class DoctorCard extends StatelessWidget {
-  const DoctorCard({super.key, required this.route});
+  const DoctorCard({super.key, required this.route, required this.doctor});
 
   final String route;
+  final Map<String, dynamic> doctor;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class DoctorCard extends StatelessWidget {
             children: [
               SizedBox(
                 width: context.width * 0.33,
-                child: Image.asset('assets/doctor2.jpg', fit: BoxFit.fill),
+                child: Image.network("${doctor['doctor_profile']}", fit: BoxFit.fill),
               ),
               Flexible(
                 child: Padding(
@@ -28,11 +29,11 @@ class DoctorCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Dr Richard Tan',
+                        'Dr ${doctor['doctor_name']}',
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'Dental',
+                        doctor['category'] ?? "xxxxxx",
                         style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                       ),
                       Spacer(),
@@ -57,7 +58,7 @@ class DoctorCard extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Navigator.of(context).pushNamed(route);
+          Navigator.of(context).pushNamed(route, arguments: doctor);
         },
       ),
     );

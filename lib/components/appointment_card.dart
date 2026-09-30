@@ -40,7 +40,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                 ],
               ),
               context.spaceSmall,
-              ScheduleCard(isHome: true),
+              ScheduleCard(isHome: true, date: '', day: '', time: ''),
               context.spaceSmall,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

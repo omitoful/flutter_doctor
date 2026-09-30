@@ -18,7 +18,8 @@ class DioProvider {
         return false;
       }
     } catch (e) {
-      return e;
+      print('登入失敗錯誤: $e');
+      return false;
     }
   }
 
@@ -48,6 +49,45 @@ class DioProvider {
       );
       if (user.statusCode == 200 && user.data != '') {
         return json.encode(user.data);
+      }
+    } catch (e) {
+      return e;
+    }
+  }
+
+  Future<dynamic> bookAppointment(
+    String date,
+    String day,
+    String time,
+    int doctor,
+    String token,
+  ) async {
+    try {
+      var response = await Dio().post(
+        'http://127.0.0.1:8000/api/book',
+        data: {'date': date, 'day': day, 'time': time, 'doctor_id': doctor},
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+      if (response.statusCode == 200 && response.data != '') {
+        return response.statusCode;
+      } else {
+        return 'Error';
+      }
+    } catch (e) {
+      return e;
+    }
+  }
+
+  Future<dynamic> getAppointments(String token) async {
+    try {
+      var response = await Dio().get(
+        'http://127.0.0.1:8000/api/appointments',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+      if (response.statusCode == 200 && response.data != '') {
+        return json.encode(response.data);
+      } else {
+        return 'Error';
       }
     } catch (e) {
       return e;
