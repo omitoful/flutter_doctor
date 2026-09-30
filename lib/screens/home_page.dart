@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Map<String, dynamic> user = {};
+  Map<String, dynamic> doctor = {};
   List<Map<String, dynamic>> medCat = [
     {"icon": FontAwesomeIcons.userDoctor, "category": "General"},
     {"icon": FontAwesomeIcons.heartPulse, "category": "Cardiology"},
@@ -34,7 +35,11 @@ class _HomePageState extends State<HomePage> {
       if (response != null) {
         setState(() {
           user = json.decode(response);
-          print(user['doctor']);
+          for (var doctorData in user['doctor']) {
+            if (doctorData['appointments'] != null) {
+              doctor = doctorData;
+            }
+          }
         });
       }
     }
@@ -119,7 +124,27 @@ class _HomePageState extends State<HomePage> {
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                       context.spaceSmall,
-                      AppointmentCard(),
+                      doctor.isNotEmpty
+                          ? AppointmentCard(doctor: doctor)
+                          : Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(20),
+                                  child: Text(
+                                    'No Appointment Today',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                       context.spaceSmall,
                       Text(
                         'Top Doctors',

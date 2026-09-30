@@ -3,7 +3,8 @@ import 'package:flutter_doctor/components/schedule_card.dart';
 import 'package:flutter_doctor/utils/config.dart';
 
 class AppointmentCard extends StatefulWidget {
-  const AppointmentCard({super.key});
+  const AppointmentCard({super.key, required this.doctor});
+  final Map<String, dynamic> doctor;
 
   @override
   State<AppointmentCard> createState() => _AppointmentCardState();
@@ -26,21 +27,34 @@ class _AppointmentCardState extends State<AppointmentCard> {
             children: <Widget>[
               Row(
                 children: [
-                  CircleAvatar(backgroundImage: AssetImage('assets/doctor1.jpg')),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(widget.doctor['doctor_profile'] ?? ''),
+                  ),
                   SizedBox(width: 10),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Dr Richard Tan', style: TextStyle(color: Colors.white)),
+                      Text(
+                        widget.doctor['doctor_name'] ?? 'Doctor',
+                        style: TextStyle(color: Colors.white),
+                      ),
                       SizedBox(height: 2),
-                      Text('Dental', style: TextStyle(color: Colors.black)),
+                      Text(
+                        widget.doctor['category'] ?? '',
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ],
                   ),
                 ],
               ),
               context.spaceSmall,
-              ScheduleCard(isHome: true, date: '', day: '', time: ''),
+              ScheduleCard(
+                isHome: true,
+                date: widget.doctor['appointments']['date'] ?? '',
+                day: widget.doctor['appointments']['day'] ?? '',
+                time: widget.doctor['appointments']['time'] ?? '',
+              ),
               context.spaceSmall,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
