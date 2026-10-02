@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_doctor/screens/appointment_page.dart';
+import 'package:flutter_doctor/screens/fav_page.dart';
 import 'package:flutter_doctor/screens/home_page.dart';
+import 'package:flutter_doctor/screens/profile_page.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainLayout extends StatefulWidget {
@@ -23,18 +25,19 @@ class _MainLayoutState extends State<MainLayout> {
             currentPage = value;
           });
         }),
-        children: <Widget>[HomePage(), AppointmentPage()],
+        children: <Widget>[HomePage(), FavPage(), AppointmentPage(), ProfilePage()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentPage,
         onTap: (page) {
           setState(() {
             currentPage = page;
-            _page.animateToPage(
-              page,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-            );
+            _page.jumpToPage(page);
+            // _page.animateToPage(
+            //   page,
+            //   duration: Duration(milliseconds: 200),
+            //   curve: Curves.easeInOut,
+            // );
           });
         },
         items: <BottomNavigationBarItem>[
@@ -43,8 +46,16 @@ class _MainLayoutState extends State<MainLayout> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.solidHeart),
+            label: 'Favorite',
+          ),
+          BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.solidCalendarCheck),
             label: 'Appointments',
+          ),
+          BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.solidUser),
+            label: 'Profile',
           ),
         ],
       ),
