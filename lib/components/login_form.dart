@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_doctor/components/button.dart';
 import 'package:flutter_doctor/main.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_doctor/providers/dio_provider.dart';
 import 'package:flutter_doctor/utils/config.dart';
 import 'package:flutter_doctor/utils/text.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -88,9 +91,26 @@ class _LoginFormState extends State<LoginForm> {
                     _passController.text,
                   );
                   if (token) {
-                    auth.loginSuccess();
-                    MyApp.navigatorKey.currentState!.pushNamed('main');
-                    // Navigator.of(context).pushNamed('main');
+                    final SharedPreferences prefs = await SharedPreferences.getInstance();
+                    final token = prefs.getString('token') ?? '';
+                    if (token.isNotEmpty && token != '') {
+                      final response = await DioProvider().getUser(token);
+                      if (response != null) {
+                        setState(() {
+                          Map<String, dynamic> appointment = {};
+                          final user = json.decode(response);
+
+                          for (var doctorData in user['doctor']) {
+                            if (doctorData['appointments'] != null) {
+                              appointment = doctorData;
+                            }
+                          }
+                          auth.loginSuccess(user, appointment);
+                          MyApp.navigatorKey.currentState!.pushNamed('main');
+                          // Navigator.of(context).pushNamed('main');
+                        });
+                      }
+                    }
                   }
                 },
                 disable: false,

@@ -110,7 +110,7 @@ class _SignUpFormState extends State<SignUpForm> {
                       _passController.text,
                     );
                     if (token) {
-                      auth.loginSuccess();
+                      auth.loginSuccess({}, {});
                       MyApp.navigatorKey.currentState!.pushNamed('main');
                     }
                   } else {

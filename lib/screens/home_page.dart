@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_doctor/components/appointment_card.dart';
 import 'package:flutter_doctor/components/doctor_card.dart';
-import 'package:flutter_doctor/providers/dio_provider.dart';
+import 'package:flutter_doctor/models/auth_model.dart';
 import 'package:flutter_doctor/utils/config.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,6 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Map<String, dynamic> user = {};
   Map<String, dynamic> doctor = {};
+  List<dynamic> favList = [];
   List<Map<String, dynamic>> medCat = [
     {"icon": FontAwesomeIcons.userDoctor, "category": "General"},
     {"icon": FontAwesomeIcons.heartPulse, "category": "Cardiology"},
@@ -27,32 +26,15 @@ class _HomePageState extends State<HomePage> {
     {"icon": FontAwesomeIcons.teeth, "category": "Dental"},
   ];
 
-  Future<void> getData() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? '';
-    if (token.isNotEmpty && token != '') {
-      final response = await DioProvider().getUser(token);
-      if (response != null) {
-        setState(() {
-          user = json.decode(response);
-          for (var doctorData in user['doctor']) {
-            if (doctorData['appointments'] != null) {
-              doctor = doctorData;
-            }
-          }
-        });
-      }
-    }
-  }
-
-  @override
-  void initState() {
-    getData();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    user = Provider.of<AuthModel>(context, listen: false).getUser;
+    doctor = Provider.of<AuthModel>(context, listen: false).appointment;
+    favList = Provider.of<AuthModel>(context, listen: false).getFav;
+
+    print(user);
+    print(favList);
+
     return Scaffold(
       body: user.isEmpty
           ? Center(child: CircularProgressIndicator())
