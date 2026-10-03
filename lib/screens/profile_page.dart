@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_doctor/main.dart';
+import 'package:flutter_doctor/providers/dio_provider.dart';
 import 'package:flutter_doctor/utils/config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -117,7 +120,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 SizedBox(width: 20),
                                 TextButton(
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    final SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    final token = prefs.getString('token') ?? '';
+                                    if (token.isNotEmpty && token != '') {
+                                      final response = await DioProvider().logout(token);
+                                      if (response == 200) {
+                                        await prefs.remove('token');
+                                        setState(() {
+                                          MyApp.navigatorKey.currentState!
+                                              .pushReplacementNamed('/');
+                                        });
+                                      }
+                                    }
+                                  },
                                   child: Text(
                                     "Logout",
                                     style: TextStyle(
