@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_doctor/components/doctor_card.dart';
+import 'package:flutter_doctor/models/auth_model.dart';
+import 'package:provider/provider.dart';
 
 class FavPage extends StatefulWidget {
   const FavPage({super.key});
@@ -23,10 +25,14 @@ class _FavPageState extends State<FavPage> {
             ),
             SizedBox(height: 20),
             Expanded(
-              child: ListView.builder(
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return DoctorCard(route: 'doc_details', doctor: {});
+              child: Consumer<AuthModel>(
+                builder: (context, auth, child) {
+                  return ListView.builder(
+                    itemCount: auth.getFavDoc.length,
+                    itemBuilder: (context, index) {
+                      return DoctorCard(doctor: auth.getFavDoc[index], isFav: true);
+                    },
+                  );
                 },
               ),
             ),

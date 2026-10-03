@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_doctor/models/auth_model.dart';
 import 'package:flutter_doctor/screens/auth_page.dart';
 import 'package:flutter_doctor/screens/booking_page.dart';
-import 'package:flutter_doctor/screens/doctor_details.dart';
 import 'package:flutter_doctor/screens/success_page.dart';
 import 'package:flutter_doctor/utils/config.dart';
 import 'package:flutter_doctor/utils/main_layout.dart';
@@ -49,21 +48,10 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => AuthPage(),
           'main': (context) => MainLayout(),
-          'doc_details': (context) => DoctorDetails(),
           'booking_page': (context) => BookingPage(),
           'success_booking': (context) => SuccessPage(),
         },
       ),
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
   }
 }
